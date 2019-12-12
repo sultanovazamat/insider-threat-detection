@@ -3,7 +3,7 @@ from pynput import mouse
 import logging
 
 formatter = logging.Formatter('%(asctime)s|%(message)s')
-path = "./"
+path = "../data/"
 listeners_started = False
 record_events = False
 

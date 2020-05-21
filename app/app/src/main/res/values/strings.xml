@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">iSeeYou</string>
+    <string name="under_control">Ваша система находится под наблюдением.\n\nВы будете уведомлены в случае обнаружения аномалий.</string>
+</resources>

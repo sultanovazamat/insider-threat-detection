@@ -228,9 +228,9 @@ def plot3d_samples(train, test, cols):
     ax.set_xlabel(cols[0])
     ax.set_ylabel(cols[1])
     ax.set_zlabel(cols[2])
-#     ax.legend()
+    # ax.legend()
     
-#     plt.title("Распределение примеров")
+    plt.title("Распределение примеров")
     
     plt.show()
 
@@ -272,7 +272,7 @@ def plot3d(name, features, truth, preds, cols, anomaly=True):
     ax.set_xlabel(cols[0])
     ax.set_ylabel(cols[1])
     ax.set_zlabel(cols[2])
-#     ax.legend()
+    ax.legend()
     
     plt.title(name)
     plt.show()
@@ -352,11 +352,11 @@ def report(clf, x_train, y_train, x_test, y_test, X_test, Y_test):
 
 
 models = {
-    'Logistic Regression': LogisticRegression(solver='lbfgs', random_state=0),
-    'K-Nearest Neighbors': KNeighborsClassifier(n_neighbors=3),
+    'Логистическая регрессия': LogisticRegression(solver='lbfgs', random_state=0),
+    'Метод k-ближайших': KNeighborsClassifier(n_neighbors=3),
     'Случайный лес': RandomForestClassifier(random_state=0),
-    'Gradient Boosting': GradientBoostingClassifier(n_estimators=500, max_depth=2, random_state=0),
-    'Multi-Layer Perceptron': MLPClassifier(hidden_layer_sizes=(512, 256, 128, 64, 32), alpha=0.001, max_iter=10000),
+    'Градиентный бустинг': GradientBoostingClassifier(n_estimators=500, max_depth=2, random_state=0),
+    'Мультислойный перцептрон': MLPClassifier(hidden_layer_sizes=(512, 256, 128, 64, 32), alpha=0.001, max_iter=10000),
 }
 
 for k,v in models.items():
@@ -378,13 +378,13 @@ n_samples = len(x_train_anomaly)
 outliers_fraction = 0.15
 n_outliers = int(outliers_fraction * n_samples)
 n_inliers = n_samples - n_outliers
-LOF_novelty = False
+LOF_novelty = True
 # define outlier/anomaly detection methods to be compared
 anomaly_algorithms = {
-    "Robust Covariance": EllipticEnvelope(contamination=outliers_fraction),
-    "One-Class SVM": svm.OneClassSVM(nu=outliers_fraction, kernel="rbf", gamma=0.1),
+    "Робастная ковариация": EllipticEnvelope(contamination=outliers_fraction),
+    "Одноклассовый МОВ": svm.OneClassSVM(nu=outliers_fraction, kernel="rbf", gamma=0.1),
     "Изолирующий лес": IsolationForest(contamination=outliers_fraction, random_state=42),
-    "Local Outlier Factor": LocalOutlierFactor(n_neighbors=35, contamination=outliers_fraction, novelty=LOF_novelty)
+    "Локальный уровень выброса": LocalOutlierFactor(n_neighbors=35, contamination=outliers_fraction, novelty=LOF_novelty)
 }
 
 y_train_anomaly = np.full(len(y_train_anomaly.index), 1)
@@ -394,7 +394,7 @@ for name, algorithm in anomaly_algorithms.items():
         algorithm.fit(x_train_anomaly)
 
         # fit the data and tag outliers
-        if name == "Local Outlier Factor":
+        if name == "Локальный уровень выброса":
             if not LOF_novelty:
                 y_pred = algorithm.fit_predict(x_train_anomaly)
             else:
